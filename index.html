@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person Information</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    .container {
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"] {
+    padding: 8px;
+    margin: 5px;
+    width: 200px;
+}
+
+button {
+    padding: 8px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+</style>
+<body>
+    <div class="container">
+        <h1>Person Information</h1>
+        <label for="nameInput">Enter Person's Name:</label>
+        <input type="text" id="nameInput">
+        <button onclick="searchPerson()">Search</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        function searchPerson() {
+    var name = document.getElementById("nameInput").value;
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            var found = false;
+            data.forEach(person => {
+                if (person.name.toLowerCase() === name.toLowerCase()) {
+                    displayPerson(person);
+                    found = true;
+                }
+            });
+            if (!found) {
+                document.getElementById("result").innerHTML = "Person not found.";
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function displayPerson(person) {
+    var resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = `
+        <h2>name: ${person.name}</h2>
+        <p>age: ${person.age}</p>
+        <p>place : ${person.place}</p>
+        <p>dob: ${person.dob}</p>
+    `;
+}
+
+    </script>
+</body>
+</html>
